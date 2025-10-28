@@ -1,1 +1,3 @@
 djenv
+__pycache__/
+*.pyc
