@@ -1,0 +1,41 @@
+{% extends 'doctors/base.html' %}
+
+{% block title %}Delete Update - Doctor Feedback System{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0">⚠️ Confirm Delete Update</h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-warning">
+                    <strong>Warning:</strong> This action cannot be undone!
+                </div>
+
+                <p><strong>Patient:</strong> {{ patient.disease_name }}</p>
+                <p><strong>Update ID:</strong> <code>{{ update.id }}</code></p>
+                <p><strong>Created:</strong> {{ update.updated_at|date:"F d, Y H:i" }}</p>
+
+                <div class="card mt-3 mb-3">
+                    <div class="card-header">
+                        <strong>Update Data:</strong>
+                    </div>
+                    <div class="card-body">
+                        <pre class="mb-0"><code>{{ update.update_data|safe }}</code></pre>
+                    </div>
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-danger btn-lg">Yes, Delete Update</button>
+                        <a href="{% url 'patient_detail' patient.id %}" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

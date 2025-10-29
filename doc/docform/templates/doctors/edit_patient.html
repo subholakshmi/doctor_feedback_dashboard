@@ -1,0 +1,110 @@
+{% extends 'doctors/base.html' %}
+
+{% block title %}Edit Patient - Doctor Feedback System{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-10 mx-auto">
+        <div class="card">
+            <div class="card-header bg-warning text-dark">
+                <h4 class="mb-0">Edit Patient</h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <strong>Patient ID:</strong> <code>{{ patient.id }}</code>
+                </div>
+
+                <form method="post" enctype="multipart/form-data" novalidate>
+                    {% csrf_token %}
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.product_name.id_for_label }}" class="form-label">Product Name *</label>
+                            {{ form.product_name }}
+                            {% if form.product_name.errors %}
+                                <div class="text-danger">{{ form.product_name.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.disease_name.id_for_label }}" class="form-label">Disease Name *</label>
+                            {{ form.disease_name }}
+                            {% if form.disease_name.errors %}
+                                <div class="text-danger">{{ form.disease_name.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.conditions_treated.id_for_label }}" class="form-label">Conditions Treated *</label>
+                        {{ form.conditions_treated }}
+                        <small class="form-text text-muted">{{ form.conditions_treated.help_text }}</small>
+                        {% if form.conditions_treated.errors %}
+                            <div class="text-danger">{{ form.conditions_treated.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.biochemistry_data.id_for_label }}" class="form-label">Biochemistry Data *</label>
+                        {{ form.biochemistry_data }}
+                        {% if form.biochemistry_data.errors %}
+                            <div class="text-danger">{{ form.biochemistry_data.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.medical_investigation.id_for_label }}" class="form-label">Medical Investigation *</label>
+                        {{ form.medical_investigation }}
+                        {% if form.medical_investigation.errors %}
+                            <div class="text-danger">{{ form.medical_investigation.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.improvements_observed.id_for_label }}" class="form-label">Improvements Observed *</label>
+                        {{ form.improvements_observed }}
+                        {% if form.improvements_observed.errors %}
+                            <div class="text-danger">{{ form.improvements_observed.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.before_image.id_for_label }}" class="form-label">Before Image</label>
+                            {% if patient.before_image %}
+                                <div class="mb-2">
+                                    <img src="{{ patient.before_image.url }}" alt="Current Before Image" class="img-thumbnail" style="max-width: 200px;">
+                                    <p class="small text-muted">Current image (upload new to replace)</p>
+                                </div>
+                            {% endif %}
+                            {{ form.before_image }}
+                            {% if form.before_image.errors %}
+                                <div class="text-danger">{{ form.before_image.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.after_image.id_for_label }}" class="form-label">After Image</label>
+                            {% if patient.after_image %}
+                                <div class="mb-2">
+                                    <img src="{{ patient.after_image.url }}" alt="Current After Image" class="img-thumbnail" style="max-width: 200px;">
+                                    <p class="small text-muted">Current image (upload new to replace)</p>
+                                </div>
+                            {% endif %}
+                            {{ form.after_image }}
+                            {% if form.after_image.errors %}
+                                <div class="text-danger">{{ form.after_image.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{% url 'patient_detail' patient.id %}" class="btn btn-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-warning">Update Patient</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
