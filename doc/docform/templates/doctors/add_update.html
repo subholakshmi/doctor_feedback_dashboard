@@ -1,0 +1,56 @@
+{% extends 'doctors/base.html' %}
+
+{% block title %}Add Update - Doctor Feedback System{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Add Patient Update</h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <strong>Patient:</strong> {{ patient.disease_name }}<br>
+                    <strong>Product:</strong> {{ patient.product_name }}
+                </div>
+
+                <form method="post" novalidate>
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label for="{{ form.update_data.id_for_label }}" class="form-label">Update Data (JSON Format)
+                            *</label>
+                        {{ form.update_data }}
+                        <small class="form-text text-muted">{{ form.update_data.help_text }}</small>
+                        {% if form.update_data.errors %}
+                        <div class="text-danger">{{ form.update_data.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="card mb-3">
+                        <div class="card-header bg-light">
+                            <strong>JSON Example:</strong>
+                        </div>
+                        <div class="card-body">
+                            <pre class="mb-0"><code>{
+  "date": "2025-10-28",
+  "improvements": "Significant reduction in symptoms",
+  "side_effects": "None observed",
+  "dosage": "10mg daily",
+  "notes": "Patient responding well to treatment",
+  "next_checkup": "2025-11-28"
+}</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{% url 'patient_detail' patient.id %}" class="btn btn-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Add Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
