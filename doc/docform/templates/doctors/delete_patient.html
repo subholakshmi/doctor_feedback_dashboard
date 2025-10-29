@@ -1,0 +1,45 @@
+{% extends 'doctors/base.html' %}
+
+{% block title %}Delete Patient - Doctor Feedback System{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0">⚠️ Confirm Delete Patient</h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-warning">
+                    <strong>Warning:</strong> This action cannot be undone!
+                </div>
+
+                <p><strong>Patient ID:</strong> <code>{{ patient.id }}</code></p>
+                <p><strong>Disease:</strong> {{ patient.disease_name }}</p>
+                <p><strong>Product:</strong> {{ patient.product_name }}</p>
+                <p><strong>Total Updates:</strong> {{ patient.updates.count }}</p>
+
+                <div class="alert alert-danger mt-3">
+                    Deleting this patient will also delete:
+                    <ul class="mb-0">
+                        <li>All {{ patient.updates.count }} patient update(s)</li>
+                        <li>All uploaded images</li>
+                        <li>All clinical data</li>
+                    </ul>
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-danger btn-lg">Yes, Delete Patient</button>
+                        <a href="{% url 'dashboard' %}" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+

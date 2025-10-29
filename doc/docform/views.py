@@ -159,3 +159,71 @@ def home_view(request):
     if request.user.is_authenticated:
         return redirect('dashboard')
     return redirect('login')
+
+@login_required
+def edit_patient_view(request, patient_id):
+    """Edit an existing patient"""
+    try:
+        doctor = request.user.doctor_profile
+    except Doctor.DoesNotExist:
+        messages.error(request, 'Doctor profile not found.')
+        return redirect('login')
+    
+    patient = get_object_or_404(Patient, id=patient_id, doctor=doctor)
+    
+    if request.method == 'POST':
+        form = PatientForm(request.POST, request.FILES, instance=patient)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Patient updated successfully!')
+            return redirect('patient_detail', patient_id=patient.id)
+        else:
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        form = PatientForm(instance=patient)
+    
+    return render(request, 'doctors/edit_patient.html', {'form': form, 'doctor': doctor, 'patient': patient})
+
+
+@login_required
+def delete_patient_view(request, patient_id):
+    """Delete a patient"""
+    try:
+        doctor = request.user.doctor_profile
+    except Doctor.DoesNotExist:
+        messages.error(request, 'Doctor profile not found.')
+        return redirect('login')
+    
+    patient = get_object_or_404(Patient, id=patient_id, doctor=doctor)
+    
+    if request.method == 'POST':
+        patient.delete()
+        messages.success(request, 'Patient deleted successfully!')
+        return redirect('dashboard')
+    
+    return render(request, 'doctors/delete_patient.html', {'patient': patient, 'doctor': doctor})
+
+
+@login_required
+def delete_update_view(request, update_id):
+    """Delete a patient update"""
+    try:
+        doctor = request.user.doctor_profile
+    except Doctor.DoesNotExist:
+        messages.error(request, 'Doctor profile not found.')
+        return redirect('login')
+    
+    update = get_object_or_404(PatientUpdate, id=update_id)
+    patient = update.patient
+    
+    # Ensure the update belongs to a patient of this doctor
+    if patient.doctor != doctor:
+        messages.error(request, 'You do not have permission to delete this update.')
+        return redirect('dashboard')
+    
+    if request.method == 'POST':
+        update.delete()
+        messages.success(request, 'Update deleted successfully!')
+        return redirect('patient_detail', patient_id=patient.id)
+    
+    return render(request, 'doctors/delete_update.html', {'update': update, 'patient': patient, 'doctor': doctor})
