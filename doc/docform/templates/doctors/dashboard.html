@@ -1,0 +1,86 @@
+{% extends 'doctors/base.html' %}
+
+{% block title %}Dashboard - Doctor Feedback System{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h2>Welcome, Dr. {{ doctor.full_name }}</h2>
+        <p class="text-muted">{{ doctor.specialty }} | {{ doctor.hospital_name }}</p>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <h5 class="card-title">Total Patients</h5>
+                <h2 class="mb-0">{{ total_patients }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Quick Actions</h5>
+                <a href="{% url 'add_patient' %}" class="btn btn-success btn-custom">
+                    ➕ Add New Patient
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="mb-0">My Patients</h4>
+    </div>
+    <div class="card-body">
+        {% if patients %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Patient ID</th>
+                        <th>Disease</th>
+                        <th>Product</th>
+                        <th>Conditions</th>
+                        <th>Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for patient in patients %}
+                    <tr>
+                        <td><code>{{ patient.id|truncatechars:13 }}</code></td>
+                        <td>{{ patient.disease_name|truncatechars:30 }}</td>
+                        <td>{{ patient.product_name }}</td>
+                        <td>
+                            {% for condition in patient.get_conditions_list|slice:":2" %}
+                            <span class="badge bg-secondary">{{ condition }}</span>
+                            {% endfor %}
+                            {% if patient.get_conditions_list|length > 2 %}
+                            <span class="badge bg-light text-dark">+{{ patient.get_conditions_list|length|add:"-2"
+                                }}</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ patient.created_at|date:"M d, Y" }}</td>
+                        <td>
+                            <a href="{% url 'patient_detail' patient.id %}" class="btn btn-sm btn-primary">
+                                View Details
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center py-5">
+            <p class="text-muted mb-3">No patients added yet.</p>
+            <a href="{% url 'add_patient' %}" class="btn btn-primary">Add Your First Patient</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
