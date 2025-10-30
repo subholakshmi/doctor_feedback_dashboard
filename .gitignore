@@ -1,4 +1,4 @@
 djenv
 __pycache__/
 *.pyc
-db.sqlite3
+doc/db.sqlite3
