@@ -21,7 +21,7 @@ A Django web application for doctors to document patient outcomes and product fe
 
 ```bash
 # Clone repository
-git clone <repository-url>
+git clone https://github.com/subholakshmi/doctor_feedback_dashboard.git
 cd doctor-feedback-system
 
 # Create virtual environment
